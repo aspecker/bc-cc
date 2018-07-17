@@ -13,5 +13,6 @@ const partyArr = fs.readFileSync('input.txt','utf8')
         })
         return parties
     },[])
+    
 
 console.log(partyArr)
