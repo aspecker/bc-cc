@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/simple.txt','utf8')
+const input = fs.readFileSync('./inputs/harder.txt','utf8')
 // console.log(input)
 
-// sorts party data into iteratable format
+// proccesses party data into sortable format
 const partyArr = input
     .trim()
     .split('\r\n')
@@ -19,7 +19,7 @@ const partyArr = input
         return parties
     },[])
 
-// sorts table data into letter id and size
+// proccesses table data into sortable format
 const tableArr = input
     .trim()
     .split('\r\n')
@@ -38,7 +38,7 @@ const tableArr = input
 
 // function to add amount of seats in an array
 const addSeats = (array) =>{
-    return array.reduce((sum,item)=>{
+     array.reduce((sum,item)=>{
         sum += item.size;
         return sum;
     },0)
@@ -55,31 +55,50 @@ const checkSeatingAmount = (tables,parties) => {
     return true;
 }
 
+// determines if the largest table is large enough for the largest party
+const checkLargestTable = (tables,parties) => {
+    const tableSizeArr = tables.map(x=>x.size)
+    const partySizeArr = parties.map(x=>x.size)
+    if (Math.max(...partySizeArr)>Math.max(...tableSizeArr)){
+        return false
+    }
+    return true;
+}
+
 const sortTables = (tables, parties) => {
-    // console.log(tables)
-    // console.log(parties)
+    // checking for edge cases
     if (checkSeatingAmount(tables,parties)===false){
         return console.log(`There are not enough seats for every guest.`)
+    } if (checkLargestTable(tables,parties)===false){
+        return console.log(`The largest table cannot seat the largest party.`)
     }
-    const partySort = parties;
-    const tableSort= tables;
-    
+
+    let partySort = parties;
+    let tableSort= tables;
+    // console.log(partySort);
+    // console.log(tableSort);
+    // while ()
     for (let i=0; i <tableSort.length;i+=1){
         for (let j=0; j <partySort.length; j+=1){
-            if (tableSort[i].size===partySort[j].size && partySort[j].seated===false){
+            // console.log(tableSort)
+            // first place all parties equal to the size of a table
+            if (tableSort[i].size===partySort[j].size && partySort[j].seated===false && tableSort[i].seated+partySort[j].size<=tableSort[i].size){
                 partySort[j].seated=true;
                 tableSort[i].seated += partySort[j].size;
-                tableSort[i].parties.push(partySort[j].name)
-            }
+                tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
+            } 
         }
     }
 
 
+const sortExactMatch = (tableSory, partySort) => {
+
+}
 
 
-
-
-    return console.log(partySort, tableSort)
+    console.log(partySort);
+    console.log(tableSort);
+    return true;
 }
 
 

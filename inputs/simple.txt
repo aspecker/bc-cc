@@ -1,6 +1,0 @@
-tables: A-5 B-7 C-6 D-8
-Thornton, party of 8
-Garcia, party of 7
-
-Taylor, party of 6
-Reese, party of 5
