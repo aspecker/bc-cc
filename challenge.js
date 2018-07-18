@@ -13,7 +13,7 @@ const partyArr = input
         parties.push({
             name: line[0].slice(0,-1),
             size: parseInt(line[3],10),
-            dislikes: line[4]==='dislikes'? line.slice(5,line.length) : 'none',
+            dislikes: line[4]==='dislikes'? line.slice(5,line.length).map(dislike=>dislike.replace(',','')) : 'none',
             seated: false
         })
         return parties
@@ -83,6 +83,24 @@ const sortExactMatch = (tables, parties) => {
     return [tableSort, partySort]
 }
 
+// function to check if a tables existing seated party conflicts with the party to be added
+const checkDislikes = (table, party) => {
+    const partyString = table.parties.reduce((string,family)=>{
+       string += family
+       return string;
+    }, '')
+    
+    party.dislikes.map(dislike=>{
+        let conflict;
+        if (partyString.includes(dislike)){
+            conflict = true
+        } else {
+            conflict = false
+        }
+        return conflict;
+    })
+}
+
 // second sort of tables, account for party dislikes
 const sortDislikes = (tables,parties) => {
     const tableSort = tables;
@@ -90,12 +108,13 @@ const sortDislikes = (tables,parties) => {
     while (partySort.map(party=>party.seated).includes(false)){
         let escapeLoop =0;
         if (escapeLoop>=10){
-            return [tableSort,partySort]
+            return [tableSort,partySort, false]
         }
         for (let i=0; i <tableSort.length;i+=1){
             for (let j=0; j <partySort.length; j+=1){
                 if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
                     && partySort[j].seated===false 
+                    // && 
                     ){
                     partySort[j].seated=true;
                     tableSort[i].seated += partySort[j].size;
@@ -105,7 +124,7 @@ const sortDislikes = (tables,parties) => {
         }
         escapeLoop +=1
     }
-    return [tableSort,partySort]
+    return [tableSort,partySort,true]
 }
 
 // core function to sort 
@@ -122,7 +141,9 @@ const sortTables = (tables, parties) => {
     let partyArray = firstSort[1];
 
     const secondSort = sortDislikes(tableArray,partyArray);
-    [tableArray, partyArray] = secondSort;
+    let escaped;
+    [tableArray, partyArray,escaped] = secondSort;
+    // console.log(escaped);
 
 
     console.log(partyArray);
@@ -130,5 +151,5 @@ const sortTables = (tables, parties) => {
     return true;
 }
 
-
-sortTables(tableArr,partyArr)
+console.log(checkDislikes({parties:['garbo','ultrafabro']},{dislikes:['other','garbo']}))
+// sortTables(tableArr,partyArr)
