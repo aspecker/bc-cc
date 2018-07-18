@@ -13,6 +13,27 @@ const partyArr = fs.readFileSync('input.txt','utf8')
         })
         return parties
     },[])
+
+const tableArr = fs.readFileSync('input.txt','utf8')
+    .trim()
+    .split('\r\n')
+    [0].split(' ')
+    .reduce((tables,item)=>{
+        if (item!=='tables:'){
+            tables.push({
+                id: item.substring(0,1),
+                size: item.substring(2)
+            }) 
+        }
+        return tables
+    }, [])
     
 
-console.log(partyArr)
+// console.log(partyArr)
+// console.log(tableArr)
+
+const sortTables = (tables, parties) => {
+    console.log(tables,parties)
+}
+
+sortTables(tableArr,partyArr)
