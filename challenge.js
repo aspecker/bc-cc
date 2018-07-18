@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/harder.txt','utf8')
+const input = fs.readFileSync('./inputs/input.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -83,21 +83,27 @@ const sortExactMatch = (tables, parties) => {
     return [tableSort, partySort]
 }
 
+// second sort of tables, account for party dislikes
 const sortDislikes = (tables,parties) => {
     const tableSort = tables;
     const partySort = parties;
-    for (let i=0; i <tableSort.length;i+=1){
-        for (let j=0; j <partySort.length; j+=1){
-            // console.log(tableSort)
-            // first place all parties equal to the size of a table
-            if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
-                && partySort[j].seated===false 
-                 ){
-                partySort[j].seated=true;
-                tableSort[i].seated += partySort[j].size;
-                tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
-            } 
+    while (partySort.map(party=>party.seated).includes(false)){
+        let escapeLoop =0;
+        if (escapeLoop>=10){
+            return [tableSort,partySort]
         }
+        for (let i=0; i <tableSort.length;i+=1){
+            for (let j=0; j <partySort.length; j+=1){
+                if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
+                    && partySort[j].seated===false 
+                    ){
+                    partySort[j].seated=true;
+                    tableSort[i].seated += partySort[j].size;
+                    tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
+                } 
+            }
+        }
+        escapeLoop +=1
     }
     return [tableSort,partySort]
 }
