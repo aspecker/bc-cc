@@ -65,19 +65,10 @@ const checkLargestTable = (tables,parties) => {
     return true;
 }
 
-const sortTables = (tables, parties) => {
-    // checking for edge cases
-    if (checkSeatingAmount(tables,parties)===false){
-        return console.log(`There are not enough seats for every guest.`)
-    } if (checkLargestTable(tables,parties)===false){
-        return console.log(`The largest table cannot seat the largest party.`)
-    }
-
-    let partySort = parties;
-    let tableSort= tables;
-    // console.log(partySort);
-    // console.log(tableSort);
-    // while ()
+// first sort of tables, places parties with exact 
+const sortExactMatch = (tables, parties) => {
+    const tableSort = tables;
+    const partySort = parties;
     for (let i=0; i <tableSort.length;i+=1){
         for (let j=0; j <partySort.length; j+=1){
             // console.log(tableSort)
@@ -89,15 +80,47 @@ const sortTables = (tables, parties) => {
             } 
         }
     }
-
-
-const sortExactMatch = (tableSory, partySort) => {
-
+    return [tableSort, partySort]
 }
 
+const sortDislikes = (tables,parties) => {
+    const tableSort = tables;
+    const partySort = parties;
+    for (let i=0; i <tableSort.length;i+=1){
+        for (let j=0; j <partySort.length; j+=1){
+            // console.log(tableSort)
+            // first place all parties equal to the size of a table
+            if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
+                && partySort[j].seated===false 
+                 ){
+                partySort[j].seated=true;
+                tableSort[i].seated += partySort[j].size;
+                tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
+            } 
+        }
+    }
+    return [tableSort,partySort]
+}
 
-    console.log(partySort);
-    console.log(tableSort);
+// core function to sort 
+const sortTables = (tables, parties) => {
+    // checking for edge cases
+    if (checkSeatingAmount(tables,parties)===false){
+        return console.log(`There are not enough seats for every guest.`)
+    } if (checkLargestTable(tables,parties)===false){
+        return console.log(`The largest table cannot seat the largest party.`)
+    }
+
+    const firstSort = sortExactMatch(tables,parties);
+    let tableArray = firstSort[0];
+    let partyArray = firstSort[1];
+
+    const secondSort = sortDislikes(tableArray,partyArray);
+    [tableArray, partyArray] = secondSort;
+
+
+    console.log(partyArray);
+    console.log(tableArray);
     return true;
 }
 
