@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/input.txt','utf8')
+const input = fs.readFileSync('./inputs/harder.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -37,10 +37,11 @@ const tableArr = input
     }, [])
 
 // function to add amount of seats in an array
-const addSeats = (array) =>{
-     array.reduce((sum,item)=>{
+function addSeats(array){
+    array.reduce((sum,item)=>{
         sum += item.size;
-        return sum;
+        // console.log(sum);
+         return sum
     },0)
 }
     
@@ -48,7 +49,7 @@ const addSeats = (array) =>{
 const checkSeatingAmount = (tables,parties) => {
     const seatCount = addSeats(tables);
     const guestCount = addSeats(parties);
-    // console.log(seatCount,guestCount)
+    console.log(seatCount,guestCount)
     if (guestCount>seatCount){
         return false;
     } 
@@ -90,31 +91,29 @@ const checkDislikes = (table, party) => {
        return string;
     }, '')
     
-    party.dislikes.map(dislike=>{
-        let conflict;
-        if (partyString.includes(dislike)){
-            conflict = true
-        } else {
-            conflict = false
-        }
-        return conflict;
-    })
+    for (let i=0; i<party.dislikes.length;i+=1){
+        if (partyString.includes(party.dislikes[i])){
+            return false
+        } 
+        
+    }
+    return true;
 }
 
 // second sort of tables, account for party dislikes
 const sortDislikes = (tables,parties) => {
     const tableSort = tables;
     const partySort = parties;
+    let escapeLoop =0;
     while (partySort.map(party=>party.seated).includes(false)){
-        let escapeLoop =0;
-        if (escapeLoop>=10){
-            return [tableSort,partySort, false]
+        if (escapeLoop >10){
+            return [tableSort,partySort,true]
         }
         for (let i=0; i <tableSort.length;i+=1){
             for (let j=0; j <partySort.length; j+=1){
                 if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
                     && partySort[j].seated===false 
-                    // && 
+                    && checkDislikes(tableSort[i],partySort[j])===true
                     ){
                     partySort[j].seated=true;
                     tableSort[i].seated += partySort[j].size;
@@ -124,7 +123,7 @@ const sortDislikes = (tables,parties) => {
         }
         escapeLoop +=1
     }
-    return [tableSort,partySort,true]
+    return [tableSort,partySort,false]
 }
 
 // core function to sort 
@@ -143,13 +142,11 @@ const sortTables = (tables, parties) => {
     const secondSort = sortDislikes(tableArray,partyArray);
     let escaped;
     [tableArray, partyArray,escaped] = secondSort;
-    // console.log(escaped);
 
-
+    console.log(`while loop threshold reached?: ${escaped}`);
     console.log(partyArray);
     console.log(tableArray);
-    return true;
 }
 
-console.log(checkDislikes({parties:['garbo','ultrafabro']},{dislikes:['other','garbo']}))
-// sortTables(tableArr,partyArr)
+
+sortTables(tableArr,partyArr)
