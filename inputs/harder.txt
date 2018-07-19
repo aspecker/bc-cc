@@ -1,11 +1,11 @@
-tables: A-8 B-8 C-7 D-7 E-6 F-7
+tables: A-8 B-8 C-7 D-7 E-6
 Thornton, party of 3
-Garcia, party of 2
+Garcia, party of 3
 Owens, party of 6 dislikes Thornton, Taylor
 Smith, party of 1 dislikes Garcia
 Taylor, party of 5 dislikes Chester, Reese
 Reese, party of 7
 Chester, party of 4 dislikes Garcia
 Nancy, party of 3 
-Willard, party of 2 dislikes Thornton, Nancy
+Willard, party of 1 dislikes Thornton, Nancy
 Griffith, party of 3 dislikes Reese

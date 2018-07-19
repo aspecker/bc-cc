@@ -145,7 +145,7 @@ const sortTables = (tables, parties) => {
 
     console.log(`while loop threshold reached?: ${escaped}`);
     console.log(partyArray);
-    console.log(tableArray);
+    return console.log(tableArray);
 }
 
 
