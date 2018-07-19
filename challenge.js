@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/dislikeExclusion.txt','utf8')
+const input = fs.readFileSync('./inputs/notEnoughSeats.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -49,6 +49,7 @@ function addSeats(array){
 const checkSeatingAmount = (tables,parties) => {
     const seatCount = addSeats(tables);
     const guestCount = addSeats(parties);
+    console.log(`guests ${guestCount}  seats${seatCount}`)
     if (guestCount>seatCount){
         return false;
     } 
@@ -63,23 +64,6 @@ const checkLargestTable = (tables,parties) => {
         return false
     }
     return true;
-}
-
-// first sort of tables, places parties with exact guest count to seat count match
-const sortExactMatch = (tables, parties) => {
-    const tableSort = tables;
-    const partySort = parties;
-    for (let i=0; i <tableSort.length;i+=1){
-        for (let j=0; j <partySort.length; j+=1){
-            // first place all parties equal to the size of a table
-            if (tableSort[i].size===partySort[j].size && partySort[j].seated===false && tableSort[i].seated+partySort[j].size<=tableSort[i].size){
-                partySort[j].seated=true;
-                tableSort[i].seated += partySort[j].size;
-                tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
-            } 
-        }
-    }
-    return [tableSort, partySort]
 }
 
 // function to check if any existing seated parties at a table conflict with the party to be added
@@ -98,23 +82,21 @@ const checkDislikes = (table, party) => {
     return true;
 }
 
-// second sort of tables, account for party dislikes
-const sortDislikes = (tables,parties) => {
+// function to sort guests into table configurations
+const sortGuests = (tables,parties) => {
     const tableSort = tables;
     const partySort = parties;
     let escapeLoop =0;
+    // while loop runs until all parties are seated, or until 10 iterations
     while (partySort.map(party=>party.seated).includes(false)){
         if (escapeLoop >10){
             return [tableSort,partySort,true]
         }
         for (let i=0; i <tableSort.length;i+=1){
             for (let j=0; j <partySort.length; j+=1){
-                if (tableSort[i].size===partySort[j].size && partySort[j].seated===false && tableSort[i].seated+partySort[j].size<=tableSort[i].size && escapeLoop===0){
-                    partySort[j].seated=true;
-                    tableSort[i].seated += partySort[j].size;
-                    tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
-                }
-                else if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
+                // checks to make sure seating won't exceed table size, that the targetted party is not already seated
+                // also checks to make sure no disliked
+                 if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
                     && partySort[j].seated===false 
                     && checkDislikes(tableSort[i],partySort[j])===true
                     ){
@@ -144,14 +126,13 @@ const sortTables = (tables, parties) => {
         Please increase the size of the largest table.
         `)
     }
-
-    const firstSort = sortExactMatch(tables,parties);
-    let tableArray = firstSort[0];
-    let partyArray = firstSort[1];
-
-    const secondSort = sortDislikes(tableArray,partyArray);
+    
+    // declare variables to caputre the sorted table array, guest array
+    // escaped variable is used to tell whether the sort was finished or not, by 
     let escaped;
-    [tableArray, partyArray,escaped] = secondSort;
+    let tableArray;
+    let partyArray;
+    [tableArray, partyArray,escaped] = sortGuests(tables,parties);
     
     // displaying output to the console
     console.log('\n')
