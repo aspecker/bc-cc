@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/notEnoughSeats.txt','utf8')
+const input = fs.readFileSync('./inputs/test.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -49,7 +49,6 @@ function addSeats(array){
 const checkSeatingAmount = (tables,parties) => {
     const seatCount = addSeats(tables);
     const guestCount = addSeats(parties);
-    console.log(`guests ${guestCount}  seats${seatCount}`)
     if (guestCount>seatCount){
         return false;
     } 
@@ -72,7 +71,6 @@ const checkDislikes = (table, party) => {
        string += family
        return string;
     }, '')
-    
     for (let i=0; i<party.dislikes.length;i+=1){
         if (partyString.includes(party.dislikes[i])){
             return false
@@ -82,14 +80,16 @@ const checkDislikes = (table, party) => {
     return true;
 }
 
-// function to sort guests into table configurations
+// function to sort guests into seating assignments
 const sortGuests = (tables,parties) => {
     const tableSort = tables;
     const partySort = parties;
+    console.log(tableSort.length,partySort.length)
     let escapeLoop =0;
     // while loop runs until all parties are seated, or until 10 iterations
     while (partySort.map(party=>party.seated).includes(false)){
         if (escapeLoop >10){
+            // boolean here to determine if the while loop ran to completion for error handling below
             return [tableSort,partySort,true]
         }
         for (let i=0; i <tableSort.length;i+=1){
@@ -105,9 +105,11 @@ const sortGuests = (tables,parties) => {
                     tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
                 } 
             }
+
         }
         escapeLoop +=1
     }
+    // boolean here to indicate that while loop did not run to completion, so all guests are successfully sat
     return [tableSort,partySort,false]
 }
 
@@ -126,7 +128,6 @@ const sortTables = (tables, parties) => {
         Please increase the size of the largest table.
         `)
     }
-    
     // declare variables to caputre the sorted table array, guest array
     // escaped variable is used to tell whether the sort was finished or not, by 
     let escaped;
@@ -142,12 +143,21 @@ const sortTables = (tables, parties) => {
     console.log(`   Seating Arrangement`)
     tableArray.map(table=>console.log(`    Table ${table.id} (${table.seated}/${table.size} seats filled) is seating ${table.parties.join(', ')}`))
 
+    // error condition if all guests were not able to be sorted
     if (escaped===true){
         console.log('\n')
         console.log(`   We were unable to sort all of your guests due to seating preferences or table seating design. \n    Please adjust the amount of seats and/or tables.`)
-        console.log(`   The following parties remain unseated:`)
+        console.log(`   
+    The following parties remain unseated:`)
         partyArray.filter(party=>party.seated===false).map(party=> console.log(`    ${party.name}, party of ${party.size} ${party.dislikes==='none'?'':`Dislikes ${party.dislikes.join(', ')}` }`))
+    } else {
+        console.log(`
+        All guests seated successfully.`)
+        
     }
+    // console.log(tableArray)
+    
+    // console.log(partyArray)
     
     
 
