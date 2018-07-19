@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/test.txt','utf8')
+const input = fs.readFileSync('./inputs/input.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -30,7 +30,8 @@ const tableArr = input
                 id: item.substring(0,1),
                 size: parseInt(item.substring(2),10),
                 seated: 0,
-                parties: []
+                parties: [],
+                dontseat: []
             }) 
         }
         return tables
@@ -68,18 +69,16 @@ const checkLargestTable = (tables,parties) => {
 // function to check if any existing seated parties at a table conflict with the party to be added
 const checkDislikes = (table, party) => {
     const satParties = table.parties
-    // const dislikesOfSatParties = 
-    if (party.dislikes==='none' && ){
+    console.log(`${table.id} satparties: ${satParties}`)
+    console.log(`${table.id} dontseat: ${table.dontseat}`)
+    if (party.dislikes==='none'&&table.dontseat.includes(party.name)===false){
         return true
+    } else if (table.dontseat.includes(party.name)===true) {
+        return false
     }
     console.log(satParties)
-    // console.log(party)
-    for (let i=0; i<party.dislikes.length;i+=1){
-        if (satParties.includes(party.dislikes[i])){
-            // console.log(party.dislikes[i])
-            return false
-        }    
-    }
+
+    
     return true;
 }
 
@@ -108,10 +107,10 @@ const sortGuests = (tables,parties) => {
                     && party.seated===false 
                     && checkDislikes(table,party)===true
                     ){
-
                     party.seated=true;
                     table.seated += party.size;
                     table.parties.push(`${party.name}(${party.size})`)
+                    if (party.dislikes!=='none') table.dontseat.push(party.dislikes)
                 } 
             })
 
@@ -119,7 +118,7 @@ const sortGuests = (tables,parties) => {
         escapeLoop +=1
     }
     // boolean here to indicate that while loop did not run to completion, so all guests are successfully sat
-    return [tableSort,partySort,false]
+     return [tableSort,partySort,false]
 }
 
 // core function to sort 
