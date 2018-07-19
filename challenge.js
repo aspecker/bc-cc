@@ -109,7 +109,12 @@ const sortDislikes = (tables,parties) => {
         }
         for (let i=0; i <tableSort.length;i+=1){
             for (let j=0; j <partySort.length; j+=1){
-                if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
+                if (tableSort[i].size===partySort[j].size && partySort[j].seated===false && tableSort[i].seated+partySort[j].size<=tableSort[i].size && escapeLoop===0){
+                    partySort[j].seated=true;
+                    tableSort[i].seated += partySort[j].size;
+                    tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
+                }
+                else if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
                     && partySort[j].seated===false 
                     && checkDislikes(tableSort[i],partySort[j])===true
                     ){
