@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/dislikeExclusion.txt','utf8')
+const input = fs.readFileSync('./inputs/notEnoughSeats.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -88,7 +88,6 @@ const checkDislikes = (table, party) => {
        string += family
        return string;
     }, '')
-    
     for (let i=0; i<party.dislikes.length;i+=1){
         if (partyString.includes(party.dislikes[i])){
             return false
@@ -113,6 +112,7 @@ const sortDislikes = (tables,parties) => {
                     && partySort[j].seated===false 
                     && checkDislikes(tableSort[i],partySort[j])===true
                     ){
+                        console.log(partySort[j])
                     partySort[j].seated=true;
                     tableSort[i].seated += partySort[j].size;
                     tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
