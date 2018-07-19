@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/harder.txt','utf8')
+const input = fs.readFileSync('./inputs/overseat.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -40,7 +40,7 @@ const tableArr = input
 function addSeats(array){
     array.reduce((sum,item)=>{
         sum += item.size;
-        // console.log(sum);
+        console.log(sum);
          return sum
     },0)
 }
@@ -49,7 +49,7 @@ function addSeats(array){
 const checkSeatingAmount = (tables,parties) => {
     const seatCount = addSeats(tables);
     const guestCount = addSeats(parties);
-    console.log(seatCount,guestCount)
+    console.log(seatCount,guestCount);
     if (guestCount>seatCount){
         return false;
     } 
