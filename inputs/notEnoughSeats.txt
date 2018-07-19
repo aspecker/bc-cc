@@ -1,10 +1,20 @@
+<<<<<<< HEAD
 tables: A-8 B-8 C-5 D-5
+=======
+tables: A-8 B-8 C-6 D-6
+>>>>>>> refactorSort
 Reese, party of 7
 Owens, party of 6 dislikes Thornton, Taylor
 Taylor, party of 5
 Thornton, party of 3
+<<<<<<< HEAD
 Garcia, party of 1
 Smith, party of 1 dislikes Garcia
 Griffith, party of 1
 
+=======
+Garcia, party of 5
+Smith, party of 3 dislikes Garcia
+Griffith, party of 4
+>>>>>>> refactorSort
 
