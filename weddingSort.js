@@ -92,22 +92,21 @@ const sortGuests = (tables,parties) => {
             // boolean here to determine if the while loop ran to completion for error handling below
             return [tableSort,partySort,true]
         }
-        for (let i=0; i <tableSort.length;i+=1){
-            for (let j=0; j <partySort.length; j+=1){
+        tableSort.forEach((table)=>{
+            partySort.forEach((party)=>{
                 // checks to make sure seating won't exceed table size, that the targetted party is not already seated
                 // also checks to make sure no disliked
-                 if (tableSort[i].seated+partySort[j].size<=tableSort[i].size 
-                    && partySort[j].seated===false 
-                    && checkDislikes(tableSort[i],partySort[j])===true
+                 if (table.seated+party.size<=table.size 
+                    && party.seated===false 
+                    && checkDislikes(table,party)===true
                     ){
-                        console.log(partySort[j])
-                    partySort[j].seated=true;
-                    tableSort[i].seated += partySort[j].size;
-                    tableSort[i].parties.push(`${partySort[j].name}(${partySort[j].size})`)
+                    party.seated=true;
+                    table.seated += party.size;
+                    table.parties.push(`${party.name}(${party.size})`)
                 } 
-            }
+            })
 
-        }
+        })
         escapeLoop +=1
     }
     // boolean here to indicate that while loop did not run to completion, so all guests are successfully sat
