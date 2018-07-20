@@ -6,7 +6,7 @@ Smith, party of 1 dislikes Garcia, Taylor, Johnson
 Taylor, party of 1
 Reese, party of 1
 Johnson, party of 1 dislikes Reese, Garcia
-Timothy, party of 1 dislikes Thornton, Taylor
+Timothy, party of 1 dislikes Thornton, Filler
 Griffith, party of 1 dislikes Garcia, Timothy
 Filler, party of 1
 Meuller, party of 1
