@@ -30,11 +30,11 @@ const checkDislikes = (table, party) => {
     // else if (table.dontseat.includes(party.dislikes[0])===true){
     else if (party.dislikes.map((dislike=>table.dontseat.includes(dislike))).includes(true)){
         // console.log(`table ${table.id}  dontseat${table.dontseat}`)
-        console.log(`table ${table.id} 
-        ds ${table.dontseat}
-        parties ${table.parties}  
-        name ${party.name} 
-        pd ${party.dislikes[0]}`)
+        // console.log(`table ${table.id} 
+        // ds ${table.dontseat}
+        // parties ${table.parties}  
+        // name ${party.name} 
+        // pd ${party.dislikes[0]}`)
         return false
     }
 
@@ -43,8 +43,8 @@ const checkDislikes = (table, party) => {
 
 // function to place the guest and alter fields accordingly
 const seatGuest = (table,party) => {
-    console.log(`party: ${Object.keys(party)}`)
-    console.log(`table: ${Object.keys(table)}`)
+    // console.log(`party: ${Object.keys(party)}`)
+    // console.log(`table: ${Object.keys(table)}`)
     if (party.dislikes!=='none') {
         party.dislikes.forEach((dislike)=>table.dontseat.push(dislike))
         if (!table.dontseat.includes(party.name)) table.dontseat.push(party.name)
@@ -110,7 +110,7 @@ const sortTables = (tables, parties) => {
     // displaying output to the console
     io.outputSeating(tableArray,partyArray,escaped)
 
-    console.log(tableArray)
+    // console.log(tableArray)
     // console.log(partyArray)
     // console.log(tableArray[0].parties)
     return 'sort done';
