@@ -67,16 +67,7 @@ const checkLargestTable = (tables,parties) => {
 
 // function to check if any existing seated parties at a table conflict with the party to be added
 const checkDislikes = (table, party) => {
-    const partyString = table.parties.reduce((string,family)=>{
-       string += family
-       return string;
-    }, '')
-    for (let i=0; i<party.dislikes.length;i+=1){
-        if (partyString.includes(party.dislikes[i])){
-            return false
-        } 
-        
-    }
+    
     return true;
 }
 
