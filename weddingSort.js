@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/input.txt','utf8')
+const input = fs.readFileSync('./inputs/test1.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -66,20 +66,46 @@ const checkLargestTable = (tables,parties) => {
     return true;
 }
 
+// // compares dislikes of seating party to current table
+const crossCompare = (dontseat,partyDislikes) => {
+    partyDislikes.forEach((partyDislike)=>{
+        if (dontseat.includes(partyDislike)) return false
+    })
+    return true
+    
+}
+
 // function to check if any existing seated parties at a table conflict with the party to be added
 const checkDislikes = (table, party) => {
-    const satParties = table.parties
-    console.log(`${table.id} satparties: ${satParties}`)
-    console.log(`${table.id} dontseat: ${table.dontseat}`)
+    // console.log(table.parties)
+    // console.log(`${table.id} satparties: ${table.parties}`)
+    // console.log(`${table.id} dontseat: ${table.dontseat}`)
+    // console.log(`${party.name} dislikes${party.dislikes}`)
     if (party.dislikes==='none'&&table.dontseat.includes(party.name)===false){
         return true
-    } else if (table.dontseat.includes(party.name)===true) {
+    } 
+    else if (table.dontseat.includes(party.name)===true) {
+        return false
+    } 
+    // else if (crossCompare(table.parties,party.dislikes)){
+    //     return false
+    // }
+    else if (crossCompare(table.dontseat,party.dislikes)===false){
         return false
     }
-    console.log(satParties)
+    return true
+}
 
-    
-    return true;
+// function to place the guest and alter fields accordingly
+const seatGuest = (table,party) => {
+    if (party.dislikes!=='none') {
+        party.dislikes.forEach((dislike)=>table.dontseat.push(dislike))
+        table.dontseat.push(party.name)
+    }
+    party.seated=true;
+    table.seated += party.size;
+    table.parties.push(`${party.name}(${party.size})`)
+
 }
 
 // function to sort guests into seating assignments
@@ -87,33 +113,22 @@ const sortGuests = (tables,parties) => {
     const tableSort = tables;
     const partySort = parties;
     // console.log(tableSort.length,partySort.length)
-    let escapeLoop =0;
+    let escapeLoop = 0;
     // while loop runs until all parties are seated, or until 10 iterations
     while (partySort.map(party=>party.seated).includes(false)){
-        if (escapeLoop >10){
+        if (escapeLoop >30){
             // boolean here to determine if the while loop ran to completion for error handling below
             return [tableSort,partySort,true]
         }
         tableSort.forEach((table)=>{
-            // console.log('__________')
             partySort.forEach((party)=>{
-                // console.log(table.seated,party.size,table.size)
-                // console.log(party.name,party.seated)
-                
-                // console.log(party.name,checkDislikes(table,party))
                 // checks to make sure seating won't exceed table size, that the targetted party is not already seated
                 // also checks to make sure no disliked
-                 if (table.seated+party.size<=table.size 
-                    && party.seated===false 
-                    && checkDislikes(table,party)===true
-                    ){
-                    party.seated=true;
-                    table.seated += party.size;
-                    table.parties.push(`${party.name}(${party.size})`)
-                    if (party.dislikes!=='none') table.dontseat.push(party.dislikes)
+                // console.log(table.parties)
+                if (checkDislikes(table,party)===true && table.seated+party.size<=table.size && party.seated===false){
+                        seatGuest(table,party)
                 } 
             })
-
         })
         escapeLoop +=1
     }
@@ -163,11 +178,7 @@ const sortTables = (tables, parties) => {
         All guests seated successfully.`)
     }
     // console.log(tableArray)
-    
     // console.log(partyArray)
-    
-    
-
     return 'sort done';
 }
 

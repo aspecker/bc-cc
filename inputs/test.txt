@@ -1,5 +1,5 @@
-tables: A-5 B-5 C-4 D-6 E-4 F-8
-Thornton, party of 3
+tables: A-7 B-7 C-6 D-7 E-5
+Thornton, party of 3 dislikes Reese
 Garcia, party of 2
 Owens, party of 3 dislikes Thornton, Taylor, Smith
 Smith, party of 2 dislikes Garcia
@@ -9,7 +9,7 @@ Johnson, party of 1 dislikes Reese, Garcia
 Timothy, party of 2 dislikes Thornton, Taylor
 Griffith, party of 2 dislikes Garcia, Timothy
 Filler, party of 2
-Meuller, party of 1
+Meuller, party of 1 dislikes Timothy
 Grober, party of 1
 Hefferr, party of 2
 Jasper, party of 1 dislikes Hefferr
