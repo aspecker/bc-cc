@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const io = require('./inputOutput.js')
-const seats = require('./seatCount.js')
+const io = require('./utils/inputOutput.js')
+const seats = require('./utils/seatCount.js')
 
 const input = fs.readFileSync('./inputs/test2.txt','utf8')
 // console.log(input)
@@ -28,7 +28,7 @@ const checkDislikes = (table, party) => {
     //     return false
     // }
     // else if (table.dontseat.includes(party.dislikes[0])===true){
-    else if (party.dislikes.map((dislike=>table.dontseat.includes(dislike))).includes(true)){
+    else if (party.dislikes.map((dislike=>table.parties.every(seated=>seated!==dislike))).includes(false)){
         // console.log(`table ${table.id}  dontseat${table.dontseat}`)
         // console.log(`table ${table.id} 
         // ds ${table.dontseat}
@@ -46,6 +46,7 @@ const seatGuest = (table,party) => {
     // console.log(`party: ${Object.keys(party)}`)
     // console.log(`table: ${Object.keys(table)}`)
     if (party.dislikes!=='none') {
+        console.log(table.dontseat)
         party.dislikes.forEach((dislike)=>table.dontseat.push(dislike))
         if (!table.dontseat.includes(party.name)) table.dontseat.push(party.name)
     }
