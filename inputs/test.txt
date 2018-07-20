@@ -1,4 +1,4 @@
-tables: A-7 B-7 C-6 D-7 E-5
+tables: A-8 B-7 C-6 D-7 E-5
 Thornton, party of 3 dislikes Reese
 Garcia, party of 2
 Owens, party of 3 dislikes Thornton, Taylor, Smith

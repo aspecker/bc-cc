@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const input = fs.readFileSync('./inputs/test1.txt','utf8')
+const input = fs.readFileSync('./inputs/test.txt','utf8')
 // console.log(input)
 
 // proccesses party data into sortable format
@@ -66,21 +66,14 @@ const checkLargestTable = (tables,parties) => {
     return true;
 }
 
-// // compares dislikes of seating party to current table
-const crossCompare = (dontseat,partyDislikes) => {
-    partyDislikes.forEach((partyDislike)=>{
-        if (dontseat.includes(partyDislike)) return false
-    })
-    return true
-    
-}
-
 // function to check if any existing seated parties at a table conflict with the party to be added
 const checkDislikes = (table, party) => {
     // console.log(table.parties)
     // console.log(`${table.id} satparties: ${table.parties}`)
     // console.log(`${table.id} dontseat: ${table.dontseat}`)
     // console.log(`${party.name} dislikes${party.dislikes}`)
+    // console.log(`table ${table.id} ${table.dontseat} name ${party.name} pd ${party.dislikes[0]}`)
+
     if (party.dislikes==='none'&&table.dontseat.includes(party.name)===false){
         return true
     } 
@@ -90,7 +83,15 @@ const checkDislikes = (table, party) => {
     // else if (crossCompare(table.parties,party.dislikes)){
     //     return false
     // }
-    else if (crossCompare(table.dontseat,party.dislikes)===false){
+    // else if (table.dontseat.includes(party.dislikes[0])===true){
+    else if (party.dislikes.map((dislike=>table.dontseat.includes(dislike))).includes(true)){
+
+        // console.log(`table ${table.id}  dontseat${table.dontseat}`)
+        console.log(`table ${table.id} 
+        ds ${table.dontseat}
+        parties ${table.parties}  
+        name ${party.name} 
+        pd ${party.dislikes[0]}`)
         return false
     }
     return true
@@ -100,7 +101,7 @@ const checkDislikes = (table, party) => {
 const seatGuest = (table,party) => {
     if (party.dislikes!=='none') {
         party.dislikes.forEach((dislike)=>table.dontseat.push(dislike))
-        table.dontseat.push(party.name)
+        if (!table.dontseat.includes(party.name)) table.dontseat.push(party.name)
     }
     party.seated=true;
     table.seated += party.size;
@@ -112,21 +113,23 @@ const seatGuest = (table,party) => {
 const sortGuests = (tables,parties) => {
     const tableSort = tables;
     const partySort = parties;
-    // console.log(tableSort.length,partySort.length)
     let escapeLoop = 0;
-    // while loop runs until all parties are seated, or until 10 iterations
+    // while loop runs until all parties are seated, or until a certain number of iterations
     while (partySort.map(party=>party.seated).includes(false)){
         if (escapeLoop >30){
             // boolean here to determine if the while loop ran to completion for error handling below
             return [tableSort,partySort,true]
         }
-        tableSort.forEach((table)=>{
-            partySort.forEach((party)=>{
+        partySort.forEach((party)=>{
+            tableSort.forEach((table)=>{
+                if (table.seated===table.size){
+                    return
+                }
                 // checks to make sure seating won't exceed table size, that the targetted party is not already seated
-                // also checks to make sure no disliked
+                // also checks to make sure no dislike conflicts
                 // console.log(table.parties)
                 if (checkDislikes(table,party)===true && table.seated+party.size<=table.size && party.seated===false){
-                        seatGuest(table,party)
+                    seatGuest(table,party)
                 } 
             })
         })
