@@ -17,9 +17,8 @@ tables: A-{int} B-{int} C-{int} D-{int} etc.
 etc.
 ```
 * no trailing spaces follow the last entry on any line
-*  line return of text input must be LF.
-    * if a different carriage return symbol is used (comment in console.log on line 4 to check)
-    * please change the .split argument on line 9 and 25 to the appropriate characters
+* that .txt files are CRLF, not LF
+    * if LF is default, please change the .split argument on line 9 and 25 to the appropriate characters(`\n`) over (`\r\n`) instead 
 * dislikes mean a party outright refuses to sit with the disliked party
     * the program would rather leave a party unplaced than place two disliked together
 
