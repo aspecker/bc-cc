@@ -3,7 +3,7 @@ const fs = require('fs');
 const io = require('./inputOutput.js')
 const seats = require('./seatCount.js')
 
-const input = fs.readFileSync('./inputs/test1.txt','utf8')
+const input = fs.readFileSync('./inputs/test2.txt','utf8')
 // console.log(input)
 
 // make calls to input processing methods
@@ -52,7 +52,6 @@ const seatGuest = (table,party) => {
     party.seated=true;
     table.seated += party.size;
     table.parties.push(party)
-    
 }
 
 // function to sort guests into seating assignments
@@ -66,8 +65,8 @@ const sortGuests = (tables,parties) => {
             // boolean here to determine if the while loop ran to completion for error handling below
             return [tableSort,partySort,true]
         }
-        partySort.forEach((party)=>{
-            tableSort.forEach((table)=>{
+        tableSort.forEach((table)=>{
+            partySort.forEach((party)=>{
                 if (table.seated===table.size || party.seated===true || table.seated+party.size>table.size){
                     return
                 }
