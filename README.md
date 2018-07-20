@@ -17,7 +17,7 @@ tables: A-{int} B-{int} C-{int} D-{int} etc.
 etc.
 ```
 * no trailing spaces follow the last entry on any line
-*  the carriage return regex at the end of the line is `\r\n`
+*  line return of text input must be LF.
     * if a different carriage return symbol is used (comment in console.log on line 4 to check)
     * please change the .split argument on line 9 and 25 to the appropriate characters
 * dislikes mean a party outright refuses to sit with the disliked party
