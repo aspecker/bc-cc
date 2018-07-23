@@ -67,10 +67,11 @@ exports.secondSort = (tablesArray, partiesArray) => {
   const parties = partiesArray;
   let counter = 0;
   let escaped=0;
-  while (parties.map((party)=>party.seated).includes(false)===true&&escaped<30){
+  while (parties.map((party)=>party.seated).includes(false)===true&&escaped<100){
   for (let i = 0; i < tables.length; i += 1) {
     counter = 0;
-    for (let j = 0; j < parties.length; j += 1) {
+    
+    let j = Math.floor(Math.random()*parties.length) 
       if (tables[i].seated + parties[j].size <= tables[i].size
         && parties[j].seated === false
         && tables[i].dontseat.includes(parties[j].name) === false
@@ -83,7 +84,7 @@ exports.secondSort = (tablesArray, partiesArray) => {
         if (parties[j].dislikes !== 'none') parties[j].dislikes.forEach((dislike) => tables[i].dontseat.push(dislike))
       }
     }
-  }
+  
   escaped +=1;
   }
   return [tables, parties]
