@@ -63,8 +63,8 @@ exports.exactSort = (tablesArray,dislikersArray) =>{
 
 
 exports.secondSort = (tablesArray, partiesArray) => {
-  let tables = tablesArray;
-  let parties = partiesArray;
+  const tables = tablesArray;
+  const parties = partiesArray;
   let counter = 0;
   let escaped=0;
   while (parties.map((party)=>party.seated).includes(false)===true&&escaped<30){
