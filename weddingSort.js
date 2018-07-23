@@ -4,7 +4,7 @@ const io = require('./utils/inputOutput.js')
 const seats = require('./utils/seatCount.js')
 const sort = require ('./utils/sortMethods.js')
 
-const input = fs.readFileSync('./inputs/test.txt','utf8')
+const input = fs.readFileSync('./inputs/test1.txt','utf8')
 // console.log(input)
 
 // make calls to input processing methods
@@ -30,7 +30,7 @@ const sortTables = (tables, parties) => {
     let tableArray=tables;
     let partyArray=parties;
 
-    // const likers = parties.filter(party=>party.dislikes==='none')
+    // const likers = parties.filter(party=>party.dislikes==='none');
     // let dislikers = sort.sortByDislikes(parties);
 
     [tableArray,partyArray] = sort.exactSort(tableArray,partyArray);
