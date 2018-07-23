@@ -33,7 +33,7 @@ const sortTables = (tables, parties) => {
     // const likers = parties.filter(party=>party.dislikes==='none');
     // let dislikers = sort.sortByDislikes(parties);
 
-    [tableArray,partyArray] = sort.exactSort(tableArray,partyArray);
+    // [tableArray,partyArray] = sort.exactSort(tableArray,partyArray);
     const likers =sort.sortBySize(partyArray).filter(party=>party.dislikes==='none');
     let dislikers = sort.sortByDislikes(partyArray);
     [tableArray, dislikers] = sort.firstSort(tableArray,dislikers);
