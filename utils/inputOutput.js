@@ -44,7 +44,7 @@ exports.outputSeating = (tableArray,partyArray,escaped) =>{
     partyArray.map(party=>console.log(`    ${party.name}, party of ${party.size}. ${party.dislikes==='none'?'':`Dislikes ${party.dislikes.join(', ')}` }`))
     console.log('\n')
     console.log(`   Seating Arrangement`)
-    tableArray.map(table=>console.log(`    Table ${table.id} (${table.seated}/${table.size} seats filled) is seating ${table.parties.map(party=>party.name).join(', ')}`))
+    tableArray.map(table=>console.log(`    Table ${table.id} (${table.seated}/${table.size} seats filled) is seating ${table.parties.map(party=>`${party.name}(${party.size})`).join(', ')}`))
 
     // error condition if all guests were not able to be sorted
     if (escaped===true){

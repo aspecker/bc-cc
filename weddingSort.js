@@ -3,7 +3,8 @@ const fs = require('fs');
 const io = require('./utils/inputOutput.js')
 const seats = require('./utils/seatCount.js')
 const sort = require ('./utils/sortMethods.js')
-const input = fs.readFileSync('./inputs/test2.txt','utf8')
+
+const input = fs.readFileSync('./inputs/test1.txt','utf8')
 // console.log(input)
 
 // make calls to input processing methods
@@ -62,15 +63,9 @@ const sortGuests = (tables,parties) => {
     let escapeLoop = 0;
     // while loop runs until all parties are seated, or until a certain number of iterations
     while (partySort.map(party=>party.seated).includes(false)){
-        if (escapeLoop >30){
-            // boolean here to determine if the while loop ran to completion for error handling below
-            return [tableSort,partySort,true]
-        }
+
         tableSort.forEach((table)=>{
             partySort.forEach((party)=>{
-                if (table.seated===table.size || party.seated===true || table.seated+party.size>table.size){
-                    return
-                }
                 // checks to make sure seating won't exceed table size, that the targetted party is not already seated
                 // also checks to make sure no dislike conflicts
                 // console.log(table.parties)
@@ -80,7 +75,6 @@ const sortGuests = (tables,parties) => {
             })
 
         })
-        escapeLoop +=1
     }
     // boolean here to indicate that while loop did not run to completion, so all guests are successfully sat
      return [tableSort,partySort,false]
@@ -106,15 +100,19 @@ const sortTables = (tables, parties) => {
     let partyArray;
     let escaped
 
-
-    // declare variables to caputre the sorted table array, guest array
-    // escaped variable is used to tell whether the sort was finished or not, by 
+    const likers = parties.filter(party=>party.dislikes==='none')
+    let dislikers = sort.sortByDislikes(parties);
+    // console.log(dislikers)
+    // tableArray = 
+    [tableArray, dislikers] = sort.firstSort(tables,dislikers);
+    partyArray = [...dislikers,...likers];
+    [tableArray,partyArray] = sort.secondSort(tableArray,partyArray)
     
     
     // [tableArray, partyArray,escaped] = sortGuests(tables,parties);
     
     // displaying output to the console
-    // io.outputSeating(tableArray,partyArray,escaped)
+    io.outputSeating(tableArray,partyArray,escaped)
 
     // console.log(tableArray)
     // console.log(partyArray)
