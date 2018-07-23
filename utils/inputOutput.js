@@ -38,7 +38,7 @@ exports.processTables = (input)=> {
 }
 
 // function to display the seating arrangement and guest list in the console
-exports.outputSeating = (tableArray,partyArray,escaped) =>{
+exports.outputSeating = (tableArray,partyArray,sorted) =>{
     console.log('\n')
     console.log(`   Guest List: `)
     partyArray.map(party=>console.log(`    ${party.name}, party of ${party.size}. ${party.dislikes==='none'?'':`Dislikes ${party.dislikes.join(', ')}` }`))
@@ -47,7 +47,7 @@ exports.outputSeating = (tableArray,partyArray,escaped) =>{
     tableArray.map(table=>console.log(`    Table ${table.id} (${table.seated}/${table.size} seats filled) is seating ${table.parties.map(party=>`${party.name}(${party.size})`).join(', ')}`))
 
     // error condition if all guests were not able to be sorted
-    if (escaped===true){
+    if (sorted===false){
         console.log('\n')
         console.log(`   We were unable to sort all of your guests due to seating preferences or table seating design. \n    Please adjust the amount of seats and/or tables.`)
         console.log(`   

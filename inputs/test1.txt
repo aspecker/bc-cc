@@ -3,8 +3,8 @@ Thornton, party of 1
 Garcia, party of 2
 Owens, party of 1 dislikes Thornton, Taylor, Smith
 Smith, party of 1 dislikes Garcia, Taylor, Johnson
-Taylor, party of 1
-Reese, party of 1
+Taylor, party of 1 dislikers Grober
+Reese, party of 1 dislikes Filler
 Johnson, party of 1 dislikes Reese, Garcia
 Timothy, party of 1 dislikes Thornton, Filler
 Griffith, party of 1 dislikes Garcia, Timothy
