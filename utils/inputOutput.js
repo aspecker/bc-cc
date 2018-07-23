@@ -14,7 +14,6 @@ exports.processParties = (input)=>{
             })
             return parties
         },[])
-        console.log(partyArr)
     return partyArr
 }
 // function to process the input into an array of table objects

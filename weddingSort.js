@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-const io = require('./inputOutput.js')
-const seats = require('./seatCount.js')
-
+const io = require('./utils/inputOutput.js')
+const seats = require('./utils/seatCount.js')
+const sort = require ('./utils/sortMethods.js')
 const input = fs.readFileSync('./inputs/test2.txt','utf8')
 // console.log(input)
 
@@ -28,7 +28,7 @@ const checkDislikes = (table, party) => {
     //     return false
     // }
     // else if (table.dontseat.includes(party.dislikes[0])===true){
-    else if (party.dislikes.map((dislike=>table.dontseat.includes(dislike))).includes(true)){
+    else if (party.dislikes.map((dislike=>table.parties.every(seated=>seated!==dislike))).includes(false)){
         // console.log(`table ${table.id}  dontseat${table.dontseat}`)
         // console.log(`table ${table.id} 
         // ds ${table.dontseat}
@@ -46,6 +46,7 @@ const seatGuest = (table,party) => {
     // console.log(`party: ${Object.keys(party)}`)
     // console.log(`table: ${Object.keys(table)}`)
     if (party.dislikes!=='none') {
+        // console.log(table.dontseat)
         party.dislikes.forEach((dislike)=>table.dontseat.push(dislike))
         if (!table.dontseat.includes(party.name)) table.dontseat.push(party.name)
     }
@@ -85,6 +86,7 @@ const sortGuests = (tables,parties) => {
      return [tableSort,partySort,false]
 }
 
+
 // core function to sort 
 const sortTables = (tables, parties) => {
     // checking if there are enough total seats
@@ -100,15 +102,19 @@ const sortTables = (tables, parties) => {
         Please increase the size of the largest table.
         `)
     }
-    // declare variables to caputre the sorted table array, guest array
-    // escaped variable is used to tell whether the sort was finished or not, by 
-    let escaped;
     let tableArray;
     let partyArray;
-    [tableArray, partyArray,escaped] = sortGuests(tables,parties);
+    let escaped
+
+
+    // declare variables to caputre the sorted table array, guest array
+    // escaped variable is used to tell whether the sort was finished or not, by 
+    
+    
+    // [tableArray, partyArray,escaped] = sortGuests(tables,parties);
     
     // displaying output to the console
-    io.outputSeating(tableArray,partyArray,escaped)
+    // io.outputSeating(tableArray,partyArray,escaped)
 
     // console.log(tableArray)
     // console.log(partyArray)
