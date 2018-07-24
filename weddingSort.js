@@ -4,7 +4,7 @@ const io = require('./utils/inputOutput.js')
 const seats = require('./utils/seatCount.js')
 const sort = require ('./utils/sortMethods.js')
 
-const input = fs.readFileSync('./inputs/larger.txt','utf8')
+const input = fs.readFileSync('./inputs/test2.txt','utf8');
 // console.log(input)
 
 // make calls to input processing methods
@@ -26,36 +26,26 @@ const sortTables = (tables, parties) => {
         Please increase the size of the largest table.
         `)
     }
-    // declaring variables
-    let tableArray=tables;
-    let partyArray=parties;
-    tableArray = sort.sortBySize(tableArray).reverse();
+    // declaring variables to contain sorted responses, counters and inital values
+    let tableArray = tables;
+    let partyArray = parties; 
+    let loopCount = 0;
+    const startingTables = tables;
+    const startingParties = parties;
 
-
-    [tableArray,partyArray] = sort.exactSort(tableArray,partyArray);
-    const likers =sort.sortBySize(partyArray).filter(party=>party.dislikes==='none');
-    let dislikers = sort.sortByDislikes(partyArray);
-    [tableArray, dislikers] = sort.firstSort(tableArray,dislikers);
-    partyArray = [...dislikers,...likers];
-    [tableArray,partyArray] = sort.firstSort(tableArray,partyArray);
-    let preRandomTables = tableArray
-    let preRandomParties = partyArray;
-
-    [preRandomTables,preRandomParties] = sort.secondSort(tableArray,partyArray);
-    // [tableArray,partyArray] = sort.thirdSort(tableArray,partyArray);
-    
-    
-    // displaying output to the console based on whether all guests were seated or not
-    if (partyArray.map((party)=>party.seated).includes(false)===true) {
+    // while loop continues until all parties are able to be seated
+    while (partyArray.map((party)=>party.seated).includes(false)===true) {
+        // escape condition to prevent infinite loops on certain statistically impossible inputs
+        if (loopCount >2000){
         const sorted = false
-        io.outputSeating(tableArray,partyArray,sorted)
-    } else {
-        io.outputSeating(tableArray,partyArray)
-    }
-    
-    
+        return io.outputSeating(tableArray,partyArray,sorted)
+        }
+            // calls main sort function inside of the while loop
+            [tableArray,partyArray,loopCount] = sort.runSorts(startingTables,startingParties,loopCount)
+        }
 
-    return 'sort done';
+    return io.outputSeating(tableArray,partyArray);
 }
 
+// calls function to begin program
 sortTables(tableArr,partyArr)

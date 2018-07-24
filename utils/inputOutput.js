@@ -39,7 +39,7 @@ exports.processTables = (input)=> {
 
 // function to display the seating arrangement and guest list in the console
 exports.outputSeating = (tables,partyArray,sorted) =>{ 
-    const tableArray = tables.reverse();
+    const tableArray = tables;
     console.log('\n')
     console.log(`   Guest List: `)
     partyArray.map(party=>console.log(`    ${party.name}, party of ${party.size}. ${party.dislikes==='none'?'':`Dislikes ${party.dislikes.join(', ')}` }`))
